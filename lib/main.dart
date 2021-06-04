@@ -1,4 +1,5 @@
 import 'package:adahi_application/screens/welcome_screen/welcome_screen.dart';
+import 'package:adahi_application/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Adaحi',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: kDefaultColor,
       ),
       home: WelcomeScreen(),
     );
