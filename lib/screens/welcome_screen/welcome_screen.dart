@@ -1,4 +1,5 @@
 import 'package:adahi_application/screens/login_screen/login_screen.dart';
+import 'package:adahi_application/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:adahi_application/shared/app_colors.dart';
 import 'package:adahi_application/shared/app_helper_methods.dart';
 import 'package:adahi_application/shared/app_helper_widgets.dart';
@@ -33,8 +34,8 @@ class WelcomeScreen extends StatelessWidget {
             Container(
               child: DefaultButton(
                 elevation: 0,
-                text: 'login',
-                function: () => navigateTo(context, LoginScreen()),
+                text: 'Sign Up',
+                function: () => navigateTo(context, SignUpScreen()),
               ),
             ),
             SizedBox(
