@@ -28,7 +28,7 @@ class DefaultButton extends StatelessWidget {
           onPressed: function,
           child: Text(
             toUpper ? text.toUpperCase() : text,
-            style: green16(),
+            style: kGreen16(),
           ),
           //black16Bold(),
         ),
@@ -42,6 +42,6 @@ class CaptionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         text,
-        style: green18Bold(),
+        style: kGreen18Bold(),
       );
 }
