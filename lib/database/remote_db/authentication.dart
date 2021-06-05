@@ -1,3 +1,4 @@
+import 'package:adahi_application/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -9,9 +10,8 @@ class AuthenticationService {
   }
 
   static Future<UserCredential> signUp({
-    @required email,
-    @required password,
+    @required UserModel userModel,
   }) async =>
       await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+          email: userModel.userEmail, password: userModel.userPassword);
 }

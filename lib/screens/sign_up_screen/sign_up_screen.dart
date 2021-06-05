@@ -1,4 +1,5 @@
 import 'package:adahi_application/database/remote_db/authentication.dart';
+import 'package:adahi_application/models/user_model.dart';
 import 'package:adahi_application/screens/login_screen/login_screen.dart';
 import 'package:adahi_application/shared/app_colors.dart';
 import 'package:adahi_application/shared/app_enum.dart';
@@ -161,8 +162,9 @@ class SignUpScreen extends StatelessWidget {
         );
       } else {
         AuthenticationService.signUp(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim());
+            userModel: UserModel(
+                userEmail: emailController.text.trim(),
+                userPassword: passwordController.text.trim()));
         print('============================================================');
         print('Authentication done and user data save');
         print('============================================================');
