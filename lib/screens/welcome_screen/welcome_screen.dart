@@ -3,6 +3,7 @@ import 'package:adahi_application/screens/sign_up_screen/sign_up_screen.dart';
 import 'package:adahi_application/shared/app_colors.dart';
 import 'package:adahi_application/shared/app_helper_methods.dart';
 import 'package:adahi_application/shared/app_helper_widgets.dart';
+import 'package:adahi_application/shared/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -16,9 +17,12 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 100.0,
-              backgroundImage: NetworkImage(
-                  'https://images.pexels.com/photos/1420706/pexels-photo-1420706.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500'),
+              radius: 105.0,
+              backgroundColor: Colors.teal[700],
+              child: CircleAvatar(
+                radius: 100.0,
+                backgroundImage: AssetImage(kSheepPhoto),
+              ),
             ),
             SizedBox(
               height: 70.0,
