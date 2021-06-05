@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "602830260354",
+    "project_id": "adahiapplication",
+    "storage_bucket": "adahiapplication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602830260354:android:2d4bcbfc8a2adcf9364c9b",
+        "android_client_info": {
+          "package_name": "com.nashmeyah.adahi_application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602830260354-j2biqft6mdkpg4jkmh7o0jaj8dcbn94i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nashmeyah.adahi_application",
+            "certificate_hash": "5c82c780cce89cb3178b559651df810f20aac1d9"
+          }
+        },
+        {
+          "client_id": "602830260354-pclcv9h23r47v2hkhnikg0enb6n5esn4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN4jDZWbzldsLn3ri3H7QJ-bUGx07xkug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602830260354-pclcv9h23r47v2hkhnikg0enb6n5esn4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
