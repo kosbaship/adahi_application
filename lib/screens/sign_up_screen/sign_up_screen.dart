@@ -1,4 +1,5 @@
 import 'package:adahi_application/database/remote_db/authentication.dart';
+import 'package:adahi_application/database/remote_db/cloud_firesore.dart';
 import 'package:adahi_application/models/user_model.dart';
 import 'package:adahi_application/screens/login_screen/login_screen.dart';
 import 'package:adahi_application/shared/app_colors.dart';
@@ -162,9 +163,21 @@ class SignUpScreen extends StatelessWidget {
         );
       } else {
         AuthenticationService.signUp(
-            userModel: UserModel(
-                userEmail: emailController.text.trim(),
-                userPassword: passwordController.text.trim()));
+                userModel: UserModel(
+                    userEmail: emailController.text.trim(),
+                    userPassword: passwordController.text.trim()))
+            .then((userCredential) {
+          CloudService.saveUserInfo(
+              userModel: UserModel(
+            userID: userCredential.user.uid,
+            userName: nameController.text.trim(),
+            userEmail: emailController.text.trim(),
+            userPassword: passwordController.text.trim(),
+            userPhone: phoneController.text.trim(),
+            userAddress: addressController.text.trim(),
+          ));
+        });
+
         print('============================================================');
         print('Authentication done and user data save');
         print('============================================================');

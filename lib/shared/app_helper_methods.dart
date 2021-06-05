@@ -1,4 +1,5 @@
 import 'package:adahi_application/database/remote_db/authentication.dart';
+import 'package:adahi_application/database/remote_db/cloud_firesore.dart';
 import 'package:adahi_application/shared/app_colors.dart';
 import 'package:adahi_application/shared/app_enum.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 initApp() {
   AuthenticationService();
+  CloudService();
 }
 
 navigateTo(context, widget) => Navigator.push(
