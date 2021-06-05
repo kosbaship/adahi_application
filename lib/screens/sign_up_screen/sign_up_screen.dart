@@ -1,13 +1,14 @@
-import 'package:adahi_application/database/remote_db/authentication.dart';
-import 'package:adahi_application/database/remote_db/cloud_firesore.dart';
 import 'package:adahi_application/models/user_model.dart';
 import 'package:adahi_application/screens/login_screen/login_screen.dart';
+import 'package:adahi_application/screens/sign_up_screen/sign_up_cubit/sign_up_cubit.dart';
+import 'package:adahi_application/screens/sign_up_screen/sign_up_cubit/sign_up_states.dart';
 import 'package:adahi_application/shared/app_colors.dart';
 import 'package:adahi_application/shared/app_enum.dart';
 import 'package:adahi_application/shared/app_helper_methods.dart';
 import 'package:adahi_application/shared/app_helper_widgets.dart';
 import 'package:adahi_application/shared/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatelessWidget {
   final nameController = TextEditingController();
@@ -17,123 +18,161 @@ class SignUpScreen extends StatelessWidget {
   final phoneController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: kSecondaryColor,
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => SignUpCubit(),
+        child: BlocConsumer<SignUpCubit, SignUpStates>(
+          listener: (context, state) {
+            if (state is SignUpLoadingState) {
+              showProgressDialog(
+                context: context,
+                text: 'please wait ...',
+              );
+            }
+
+            if (state is SignUpSuccessState) {
+              Navigator.pop(context);
+              navigateAndFinish(
+                context,
+                LoginScreen(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                ),
+              );
+              showToast(
+                massage: 'created',
+                color: ToastColors.SUCCESS,
+              );
+            }
+
+            if (state is SignUpErrorState) {
+              Navigator.pop(context);
+              showProgressDialog(
+                context: context,
+                text: 'in use',
+                error: true,
+              );
+            }
+          },
+          builder: (context, state) => Scaffold(
+            backgroundColor: kSecondaryColor,
+            body: SafeArea(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Column(
                       children: [
-                        Text(
-                          '',
-                          textAlign: TextAlign.center,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '',
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              width: 12,
+                            ),
+                            Hero(
+                              tag: 'inOutHeroTag',
+                              child: CircleAvatar(
+                                child:
+                                    ClipOval(child: Image.asset(kSheepPhoto)),
+                                radius: 90,
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
-                          width: 12,
+                          height: 35.0,
                         ),
-                        Hero(
-                          tag: 'inOutHeroTag',
-                          child: CircleAvatar(
-                            child: ClipOval(child: Image.asset(kSheepPhoto)),
-                            radius: 90,
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              CustomTextFormField(
+                                  title: 'Name',
+                                  keyboardType: TextInputType.text,
+                                  controller: nameController,
+                                  prefixIcon: Icons.person),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              CustomTextFormField(
+                                  title: 'Email',
+                                  keyboardType: TextInputType.emailAddress,
+                                  controller: emailController,
+                                  prefixIcon: Icons.email),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              CustomTextFormField(
+                                  title: 'Password',
+                                  keyboardType: TextInputType.visiblePassword,
+                                  controller: passwordController,
+                                  prefixIcon: Icons.lock,
+                                  obscureText: true),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              CustomTextFormField(
+                                title: 'Phone',
+                                keyboardType: TextInputType.number,
+                                controller: phoneController,
+                                prefixIcon: Icons.phone_android,
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              CustomTextFormField(
+                                title: 'address',
+                                keyboardType: TextInputType.text,
+                                controller: addressController,
+                                prefixIcon: Icons.location_city,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 35.0,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: CustomFancyButton(
+                            buttonTitle: 'Sign Up'.toUpperCase(),
+                            onPressed: () =>
+                                _checkValidationAndSignUP(context: context),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 35.0,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            navigateTo(
+                                context,
+                                LoginScreen(
+                                    // email: emailController.text.trim(),
+                                    // password: passwordController.text.trim(),
+                                    ));
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'I have an account',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 35.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          CustomTextFormField(
-                              title: 'Name',
-                              keyboardType: TextInputType.text,
-                              controller: nameController,
-                              prefixIcon: Icons.person),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextFormField(
-                              title: 'Email',
-                              keyboardType: TextInputType.emailAddress,
-                              controller: emailController,
-                              prefixIcon: Icons.email),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextFormField(
-                              title: 'Password',
-                              keyboardType: TextInputType.visiblePassword,
-                              controller: passwordController,
-                              prefixIcon: Icons.lock,
-                              obscureText: true),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextFormField(
-                            title: 'Phone',
-                            keyboardType: TextInputType.number,
-                            controller: phoneController,
-                            prefixIcon: Icons.phone_android,
-                          ),
-                          SizedBox(
-                            height: 20.0,
-                          ),
-                          CustomTextFormField(
-                            title: 'address',
-                            keyboardType: TextInputType.text,
-                            controller: addressController,
-                            prefixIcon: Icons.location_city,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: CustomFancyButton(
-                        buttonTitle: 'Sign Up'.toUpperCase(),
-                        onPressed: () =>
-                            _checkValidationAndSignUP(context: context),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35.0,
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        navigateTo(
-                            context,
-                            LoginScreen(
-                                // email: emailController.text.trim(),
-                                // password: passwordController.text.trim(),
-                                ));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              'I have an account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -162,32 +201,14 @@ class SignUpScreen extends StatelessWidget {
           color: ToastColors.ERROR,
         );
       } else {
-        AuthenticationService.signUp(
-                userModel: UserModel(
-                    userEmail: emailController.text.trim(),
-                    userPassword: passwordController.text.trim()))
-            .then((userCredential) {
-          CloudService.saveUserInfo(
-              userModel: UserModel(
-            userID: userCredential.user.uid,
-            userName: nameController.text.trim(),
-            userEmail: emailController.text.trim(),
-            userPassword: passwordController.text.trim(),
-            userPhone: phoneController.text.trim(),
-            userAddress: addressController.text.trim(),
-          ));
-        });
-
-        print('============================================================');
-        print('Authentication done and user data save');
-        print('============================================================');
-        // SignUpCubit.get(context).authenticationAndSaveUserInfo(
-        //     userModel: UserModel(
-        //   userName: nameController.text.trim(),
-        //   userEmail: emailController.text.trim(),
-        //   userPassword: passwordController.text.trim(),
-        //   userPhone: phoneController.text.trim(),
-        // ));
+        SignUpCubit.get(context).authenticationAndSaveUserInfo(
+            userModel: UserModel(
+          userName: nameController.text.trim(),
+          userEmail: emailController.text.trim(),
+          userPassword: passwordController.text.trim(),
+          userAddress: addressController.text.trim(),
+          userPhone: phoneController.text.trim(),
+        ));
       }
     }
   }
